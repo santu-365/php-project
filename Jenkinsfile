@@ -28,8 +28,8 @@ pipeline {
                     def dockerrm = 'sudo docker rm -f php-app-container || true'
                     def dockerCmd = 'sudo docker run -itd --name php-app-container -p 8083:80 santu365/php-app:v1'
                     sshagent(['sshkeypair']) {
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@<172-31-29-225> ${dockerrm}"
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@<172-31-29-225> ${dockerCmd}"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@<172.31.29.225> ${dockerrm}"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@<172.31.29.225> ${dockerCmd}"
                     }
                 }
             }
