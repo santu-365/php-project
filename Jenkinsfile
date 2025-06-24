@@ -14,10 +14,10 @@ pipeline {
                 }
             }
         }
-        stage('Docker Login') {
+        stage('Docker Login & Push') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                    sh "echo $PASS | docker login -u $USER --password-stdin"
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
                     sh 'docker push santu365/php-app:v1'
                 }
             }
@@ -28,12 +28,11 @@ pipeline {
                     def dockerrm = 'sudo docker rm -f php-app-container || true'
                     def dockerCmd = 'sudo docker run -itd --name php-app-container -p 8083:80 santu365/php-app:v1'
                     sshagent(['sshkeypair']) {
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@<172.31.17.127> ${dockerrm}"
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@<172.31.17.127> ${dockerCmd}"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.17.127 '${dockerrm}'"
+                        sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.17.127 '${dockerCmd}'"
                     }
                 }
             }
         }
     }
 }
-
